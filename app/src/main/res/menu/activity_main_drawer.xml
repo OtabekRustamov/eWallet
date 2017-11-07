@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dashboadr"
+            android:icon="@drawable/ic_account_balance_black_24dp"
+            android:title="Home" />
+        <item
+            android:id="@+id/instPay"
+            android:title="Instant Payment" />
+        <item
+            android:id="@+id/Account"
+            android:title="Account" />
+        <item
+            android:id="@+id/addfound"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Add Found" />
+        <item
+            android:id="@+id/exchange"
+            android:title="Convert Exchange" />
+        <item
+            android:id="@+id/userpro"
+            android:icon="@drawable/ic_person_outline_black_24dp"
+            android:title="User Profile" />
+        <item
+            android:id="@+id/invitation"
+            android:title="Invitation Link" />
+        <item
+            android:id="@+id/contact"
+            android:title="Contact Us" />
+        <item
+            android:id="@+id/setting"
+            android:title="Currency Setting" />
+
+    </group>
+
+</menu>
