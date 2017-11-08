@@ -37,10 +37,14 @@ public class ApiManager {
         sharedPreferences.edit().remove(Constants.X_User_Token).apply();
     }
 
+    public boolean hasToken() {
+        return sharedPreferences.getString(Constants.X_User_Token, "") != null;
+    }
+
     public Observable<LoginModel> login(String login, String password) {
         return apiService.login(Constants.CONTENT_TYPE,
                 "FA6EC979-2B16-4103-BE65-FF986E4C9425",
-                login, password)
+                 login, password)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -51,9 +55,10 @@ public class ApiManager {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-    public Observable<CreatePay_Respose> createPay(ModelPost post){
+
+    public Observable<CreatePay_Respose> createPay(ModelPost post) {
         return apiService.createpay(sharedPreferences.getString(Constants.X_User_Token, ""),
-                "FA6EC979-2B16-4103-BE65-FF986E4C9425","application/json",
+                "FA6EC979-2B16-4103-BE65-FF986E4C9425", "application/json",
                 post).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

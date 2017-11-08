@@ -2,6 +2,7 @@ package com.example.root.ewallet.app.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.root.ewallet.R;
+import com.example.root.ewallet.app.balance.BalanceFragment;
+import com.example.root.ewallet.app.exchange.ExchangeFragment;
 import com.example.root.ewallet.app.login.presenter.LoginPresenterIml;
 import com.example.root.ewallet.app.main.model.ItemDataSnipper;
 import com.example.root.ewallet.app.main.presenter.adapters.SpinnerAdapter;
@@ -29,8 +32,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.android.AndroidInjection;
+import dagger.android.support.AndroidSupportInjection;
 
 public class MainActivity extends BaseActivity {
+   @Inject
+    SharedPreferences sharedPreferences;
     @BindView(R.id.toolbarmain)
     Toolbar toolbar;
     @BindView(R.id.drawer_layout)
@@ -41,7 +48,6 @@ public class MainActivity extends BaseActivity {
     LinearLayout llinstantpaysub;
     @BindView(R.id.llaccounts)
     LinearLayout llaccounts;
-
     @BindView(R.id.llaccountsub)
     LinearLayout llaccountssub;
     @BindView(R.id.lladdfunds)
@@ -58,6 +64,8 @@ public class MainActivity extends BaseActivity {
     LinearLayout llinvitation;
     @BindView(R.id.llcontactus)
     LinearLayout llcontactus;
+    @BindView(R.id.lldashboard)
+    LinearLayout lldashboard;
     @BindView(R.id.tvpaynow)
     TextView tvpaynow;
     @BindView(R.id.tvhistory)
@@ -98,6 +106,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -126,12 +135,32 @@ public class MainActivity extends BaseActivity {
                 .add(R.id.container, new DashboardFragment())
                 .addToBackStack(null)
                 .commit();
+        profile_name.setText(sharedPreferences.getString("FullName",""));
+
     }
 
-    @OnClick(value = {R.id.llinstanpay,R.id.llaccounts,R.id.lladdfunds,
-            R.id.llexchange,R.id.lluserprofile,R.id.llinvitation,R.id.llcontactus})
+    @OnClick(value = {R.id.llinstanpay, R.id.llaccounts, R.id.lladdfunds,
+            R.id.llexchange, R.id.lluserprofile, R.id.llinvitation, R.id.llcontactus, R.id.lldashboard})
     public void clickRootMenues(View v) {
         switch (v.getId()) {
+            case R.id.lldashboard: {
+                if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof DashboardFragment) {
+                    drawer_layout.closeDrawer(Gravity.START);
+                    return;
+                }
+                drawer_layout.closeDrawers();
+                replaceFragment(new DashboardFragment());
+                break;
+            }
+            case R.id.llexchange: {
+                if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof ExchangeFragment) {
+                    drawer_layout.closeDrawer(Gravity.START);
+                    return;
+                }
+                drawer_layout.closeDrawers();
+                replaceFragment(new ExchangeFragment());
+                break;
+            }
             case R.id.llinstanpay: {
                 llinstantpaysub.setVisibility(llinstantpaysub.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
                 break;
@@ -144,10 +173,7 @@ public class MainActivity extends BaseActivity {
                 lladdfundssub.setVisibility(lladdfundssub.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
                 break;
             }
-            case R.id.llexchange: {
-                Toast.makeText(this, "llexchange", Toast.LENGTH_SHORT).show();
-                break;
-            }
+
             case R.id.lluserprofile: {
                 lluserprifilessub.setVisibility(lluserprifilessub.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
                 break;
@@ -159,18 +185,19 @@ public class MainActivity extends BaseActivity {
             case R.id.llcontactus: {
                 Toast.makeText(this, "llcontactus", Toast.LENGTH_SHORT).show();
                 break;
-            }case R.id.llcurrency_setting: {
+            }
+            case R.id.llcurrency_setting: {
                 Toast.makeText(this, "llcurrency_setting", Toast.LENGTH_SHORT).show();
                 break;
             }
         }
     }
 
-    @OnClick(value = {R.id.tvpaynow,R.id.tvhistory,R.id.tvcurrencies,R.id.tvbalance,R.id.tvstatements,R.id.depositinstruction
-     ,R.id.tvdeposithistory,R.id.tvuploadproof,R.id.tvviewprofile,R.id.tvchangepassword,R.id.resetpassword})
+    @OnClick(value = {R.id.tvpaynow, R.id.tvhistory, R.id.tvcurrencies, R.id.tvbalance, R.id.tvstatements, R.id.depositinstruction
+            , R.id.tvdeposithistory, R.id.tvuploadproof, R.id.tvviewprofile, R.id.tvchangepassword, R.id.resetpassword})
     public void clickSubMenues(View v) {
         switch (v.getId()) {
-            case R.id.tvpaynow:
+            case R.id.tvpaynow: {
                 if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof PayNowFragment) {
                     drawer_layout.closeDrawer(Gravity.START);
                     return;
@@ -179,8 +206,20 @@ public class MainActivity extends BaseActivity {
                 llinstantpaysub.setVisibility(View.GONE);
                 replaceFragment(new PayNowFragment());
                 break;
+            }
+            case R.id.tvbalance: {
+                if (getSupportFragmentManager().findFragmentById(R.id.container) instanceof BalanceFragment) {
+                    drawer_layout.closeDrawer(Gravity.START);
+                    return;
+                }
+                drawer_layout.closeDrawers();
+                llaccountssub.setVisibility(View.GONE);
+                replaceFragment(new BalanceFragment());
+                break;
+            }
         }
     }
+
 
     public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()

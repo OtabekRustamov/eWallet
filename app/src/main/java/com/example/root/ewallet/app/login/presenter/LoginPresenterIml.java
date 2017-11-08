@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import com.example.root.ewallet.app.login.LoginActivity;
 import com.example.root.ewallet.app.login.model.LoginModel;
-import com.example.root.ewallet.common.LoadingDilalog;
 import com.example.root.ewallet.util.ApiManager;
 import com.example.root.ewallet.util.Constants;
 
@@ -20,6 +19,8 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class LoginPresenterIml implements LoginPresenter {
+
+
     private LoginActivity loginActivity;
     private ApiManager apiManager;
     private SharedPreferences sharedPreferences;
@@ -35,37 +36,38 @@ public class LoginPresenterIml implements LoginPresenter {
     @Override
     public void fillLogin(String login, String password) {
         loginActivity.show();
-        apiManager.login(login, password)
-                .subscribe(new Observer<LoginModel>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+            apiManager.login(login, password)
+                    .subscribe(new Observer<LoginModel>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
 
-                    @Override
-                    public void onNext(LoginModel result) {
-                        if (result.isSuccess()) {
-                            loginActivity.dismiss();
-                            loginActivity.startMain();
-                            sharedPreferences.edit().putString(Constants.X_User_Token, result.getData().getTokenData().getToken()).commit();
-                            sharedPreferences.edit().putString("userName", result.getData().getUserName().toString()).commit();
-                            sharedPreferences.edit().putString("FullName", result.getData().getFullName().toString()).commit();
-                            sharedPreferences.edit().putString("lastime", result.getData().getLastLogInDate()).commit();
-                            Log.d("sss", "Ok");
-                        } else {
-                            Toast.makeText(loginActivity, result.getError().getUserMessage(), Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onNext(LoginModel result) {
+                            if (result.isSuccess()) {
+                                loginActivity.dismiss();
+                                loginActivity.startMain();
+                                sharedPreferences.edit().putString(Constants.X_User_Token, result.getData().getTokenData().getToken()).commit();
+                                sharedPreferences.edit().putString("userName", result.getData().getUserName().toString()).commit();
+                                sharedPreferences.edit().putString("FullName", result.getData().getFullName().toString()).commit();
+                                sharedPreferences.edit().putString("lastime", result.getData().getLastLogInDate()).commit();
+
+                                Log.d("sss", "Ok");
+                            } else {
+                                Toast.makeText(loginActivity, result.getError().getUserMessage(), Toast.LENGTH_SHORT).show();
+                                loginActivity.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d("sss", e.getMessage().toString());
                             loginActivity.dismiss();
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("sss", e.getMessage().toString());
-                        loginActivity.dismiss();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        }
     }
-}

@@ -1,10 +1,12 @@
 package com.example.root.ewallet.config.model;
 
+import com.example.root.ewallet.app.exchange.ExchangeFragment;
 import com.example.root.ewallet.app.login.LoginActivity;
 import com.example.root.ewallet.app.main.DashboardFragment;
 import com.example.root.ewallet.app.main.MainActivity;
 import com.example.root.ewallet.app.paynow.PayNowFragment;
 import com.example.root.ewallet.config.subcomponent.DashboardFragmentSubComponent;
+import com.example.root.ewallet.config.subcomponent.ExchangeFragmentSubComponent;
 import com.example.root.ewallet.config.subcomponent.LoginActivitySubComponent;
 import com.example.root.ewallet.config.subcomponent.MainActivitySubComponent;
 import com.example.root.ewallet.config.subcomponent.PayNowFragmentSubComponent;
@@ -20,7 +22,8 @@ import dagger.android.ContributesAndroidInjector;
         LoginActivitySubComponent.class,
         PayNowFragmentSubComponent.class,
         MainActivitySubComponent.class,
-        DashboardFragmentSubComponent.class
+        DashboardFragmentSubComponent.class,
+        ExchangeFragmentSubComponent.class
 })
 public abstract class MainModule {
     @ContributesAndroidInjector
@@ -30,5 +33,7 @@ public abstract class MainModule {
     @ContributesAndroidInjector
     abstract PayNowFragment contributePayNowFragment();
     @ContributesAndroidInjector
-    abstract DashboardFragment contributedashboardFragment();
+    abstract DashboardFragment dashboardFragment();
+    @ContributesAndroidInjector
+    abstract ExchangeFragment contributeexchangeFragment();
 }

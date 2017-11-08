@@ -3,12 +3,10 @@ package com.example.root.ewallet.app.paynow;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -53,21 +51,11 @@ public class PayNowFragment extends BaseFragment implements PayNowPresenter {
     EditText etinvoice;
     @BindView(R.id.etmemo)
     EditText etmemo;
-//    @BindView(R.id.btnCreate)
-//    Button btnCreate;
-    @BindView(R.id.btpaynow)
+    @BindView(R.id.btPaynow)
     Button btpaynow;
-    @BindView(R.id.btreset)
+    @BindView(R.id.btReset)
     Button btreset;
     private LoadingDilalog loadingDilalog;
-
-    public static Fragment newInstancePayNow(String strings) {
-        PayNowFragment fragment = new PayNowFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("paynow", strings);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,7 +86,7 @@ public class PayNowFragment extends BaseFragment implements PayNowPresenter {
         loadingDilalog.dismiss();
     }
 
-    @OnClick(R.id.btpaynow)
+    @OnClick(R.id.btPaynow)
     public void clickCreate() {
         if (etamount.getText().toString().isEmpty() || etTo.getText().toString().isEmpty() || etinvoice.getText().toString().isEmpty()) {
             Toast.makeText(getContext(), "Please fill the forms", Toast.LENGTH_SHORT).show();

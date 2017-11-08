@@ -59,16 +59,16 @@ public class DashboardFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.dashboard, container, false);
+        View rootView = inflater.inflate(R.layout.dashboard_fragment, container, false);
         ButterKnife.bind(this, rootView);
-        // sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         init();
         return rootView;
     }
 
     private void init() {
-        tvdashboard.setText(sharedPreferences.getString("lastime", ""));
-        llpaynow.setClickable(true);
+        tvdashboard.setText(getString(R.string.welcome)+"! "+" "+sharedPreferences.getString("FullName","")+"\n"
+                +sharedPreferences.getString("lastime", ""));
+
     }
 
     @OnClick(value = {R.id.llbalance, R.id.llhistory, R.id.llpaynow})
